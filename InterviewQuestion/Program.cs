@@ -7,18 +7,25 @@ public class Program
 {
     public static void Main(string[] args)
     {
-        /*var s = new Solution();
-        var arr = new int[1, 2, 3, 4, 5];
-        ListNode head = new ListNode();
-        foreach (var x in arr)
-        {
-            
-        }
-        //s.ReverseList();
-        */
         var s = new Solution();
-        Console.Write(s.ReverseString2("1234".ToArray()));
+        ReverseString2Test(s);
+        ListNodeTest(s);
         Console.ReadKey();
+    }
+
+    private static void ListNodeTest(Solution s)
+    {
+        var head = s.Populate(new int[] { 1, 2, 3, 4, 5 });
+        s.PrintListNodes(head);
+        s.PrintListNodes(s.ReverseList(head));
+    }
+
+    private static void ReverseString2Test(Solution s)
+    {
+        Console.WriteLine(s.ReverseString2("1234".ToArray()));
+        Console.WriteLine(s.ReverseString2("123".ToArray()));
+        Console.WriteLine(s.ReverseString2("12".ToArray()));
+        Console.WriteLine(s.ReverseString2("1".ToArray()));
     }
 }
 
@@ -53,36 +60,56 @@ public class ListNode
 
 public class Solution
 {
+    public ListNode Populate(int[] values)
+    {
+        ListNode head = null;
+        ListNode tail = head;
+
+        for (var i = 0; i < values.Length; i++)
+        {
+            var tmp = new ListNode(values[i]);
+
+            if (head == null)
+            {
+                head = tmp;
+                tail = head;
+            }
+            else
+            {
+                tail.next = tmp;
+                tail = tmp;
+            }
+        }
+
+        return head;
+    }
+
+    public void PrintListNodes(ListNode head)
+    {
+        var tail = head;
+        while (tail != null)
+        {
+            Console.Write(tail.val);
+            tail = tail.next;
+        }
+        Console.WriteLine();
+    }
+
     public ListNode ReverseList(ListNode head)
     {
         var h = head;
-        var t = head; //1
-        ListNode tmp=null;
-        //[1, 2, 3, 4, 5]
-        // t   tm  
-        while (h != null)
+        ListNode tmp = null;
+        ListNode prev = null;
+
+        while (h != null) 
         {
-            /*if (tmp == null)
-            {
-                tmp = t.next;//2
-                tmp.next = t;//1
-                t.next = null;
-                t = tmp;
-            }
-            else*/
-            {
-                //
-                var l = t;//1
-                var r = t.next; //2
-                //r.next = l;//
-                //l.next = null;
-                
-            }
-
-            h = head.next;
-
+            tmp = h.next;
+            h.next = prev;
+            prev = h;
+            h = tmp;
         }
-        head = t;
+
+        head = prev;
 
         return head;
     }
@@ -106,9 +133,6 @@ public class Solution
 
     public char[] ReverseString2(char[] word)
     {
-        /*if (string.IsNullOrWhiteSpace(word))
-            return string.Empty;*/
-
         //"hello"
         //olleh
         //01234
